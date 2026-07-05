@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vinnovates — Property Management &amp; Consultancy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F2E7;
+    --cream-dim:#EFE7D6;
+    --charcoal:#17151A;
+    --charcoal-soft:#211E24;
+    --teal-900:#0B2E2A;
+    --teal-700:#134D44;
+    --gold-600:#AD7C2C;
+    --gold-500:#C6963F;
+    --gold-300:#E2BE7C;
+    --ink:#191712;
+    --paper:#FFFFFF;
+    --line:rgba(25,23,18,0.12);
+    --line-dark:rgba(247,242,231,0.14);
+    --shadow:0 24px 60px -24px rgba(15,15,10,0.4);
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:'Work Sans',sans-serif; font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{ font-family:'Fraunces',serif; font-weight:600; letter-spacing:-0.01em; margin:0; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 32px; }
+  :focus-visible{ outline:2px solid var(--gold-500); outline-offset:3px; }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important; animation-iteration-count:1!important; transition-duration:.001ms!important; scroll-behavior:auto!important;}
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.18em; text-transform:uppercase;
+    font-weight:600; display:inline-flex; align-items:center; gap:10px;
+  }
+  .eyebrow.on-dark{ color:var(--gold-300); }
+  .eyebrow.on-light{ color:var(--gold-600); }
+  .eyebrow::before{ content:''; width:24px; height:1px; background:currentColor; opacity:0.7; display:inline-block; }
+
+  /* reveal */
+  .reveal{ opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* ---------------- Header ---------------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:20px 0; transition:background .35s ease, padding .35s ease, box-shadow .35s ease;
+  }
+  header.scrolled{
+    background:rgba(247,242,231,0.92); backdrop-filter:blur(10px);
+    padding:12px 0; box-shadow:0 8px 24px -18px rgba(0,0,0,0.3);
+  }
+  .nav{ display:flex; align-items:center; justify-content:space-between; max-width:1180px; margin:0 auto; padding:0 32px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand img{ height:40px; width:40px; object-fit:contain; }
+  .brand-text .name{ font-family:'Fraunces',serif; font-weight:700; font-size:18px; letter-spacing:0.02em; color:var(--cream); transition:color .35s ease; }
+  .brand-text .tag{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-300); }
+  header.scrolled .brand-text .name{ color:var(--teal-900); }
+  nav.links{ display:flex; gap:36px; align-items:center; }
+  nav.links a{ font-size:14.5px; font-weight:500; color:var(--cream); position:relative; padding:4px 0; transition:color .35s ease; }
+  header.scrolled nav.links a{ color:var(--teal-900); }
+  nav.links a::after{ content:''; position:absolute; left:0; bottom:0; width:0; height:1.5px; background:var(--gold-500); transition:width .25s ease; }
+  nav.links a:hover::after{ width:100%; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:999px;
+    font-weight:600; font-size:14px; border:1px solid var(--gold-500); cursor:pointer;
+    background:var(--gold-500); color:var(--teal-900);
+    transition:transform .2s ease, background .2s ease, box-shadow .2s ease, color .2s ease;
+    white-space:nowrap;
+  }
+  .btn:hover{ background:var(--gold-300); transform:translateY(-2px); box-shadow:0 14px 30px -14px rgba(198,150,63,0.6); }
+  .btn.ghost{ background:transparent; color:var(--cream); border:1px solid rgba(247,242,231,0.5); }
+  .btn.ghost:hover{ background:rgba(247,242,231,0.12); color:var(--cream); }
+  .menu-toggle{ display:none; }
+
+  /* ---------------- Hero ---------------- */
+  .hero{
+    position:relative; min-height:100vh; display:flex; align-items:flex-end;
+    background:
+      linear-gradient(0deg, rgba(8,14,12,0.94) 0%, rgba(8,14,12,0.78) 30%, rgba(8,14,12,0.5) 60%, rgba(8,14,12,0.62) 100%),
+      url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+    padding-bottom:90px;
+  }
+  .hero-inner{ max-width:1180px; margin:0 auto; padding:0 32px; }
+  .hero .eyebrow{ color:var(--gold-300); margin-bottom:22px; }
+  .hero h1{
+    color:var(--cream); font-size:clamp(2.6rem,5.5vw,4.4rem); line-height:1.04;
+    max-width:820px; margin-bottom:24px;
+    text-shadow:0 4px 24px rgba(0,0,0,0.55);
+  }
+  .hero h1 span{ display:block; opacity:0; transform:translateY(30px); animation:lineIn .8s cubic-bezier(.2,.9,.3,1) forwards; }
+  .hero h1 span:nth-child(1){ animation-delay:.15s; }
+  .hero h1 span:nth-child(2){ animation-delay:.35s; color:var(--gold-300); font-style:italic; }
+  @keyframes lineIn{ to{ opacity:1; transform:translateY(0); } }
+  .hero p.lead{
+    color:rgba(247,242,231,0.9); font-size:17.5px; max-width:480px; margin-bottom:34px;
+    text-shadow:0 2px 14px rgba(0,0,0,0.5);
+  }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; }
+  .scroll-cue{
+    position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:rgba(247,242,231,0.7); font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase;
+  }
+  .scroll-cue .line{ width:1px; height:30px; background:rgba(247,242,231,0.5); animation:cueMove 1.8s ease-in-out infinite; }
+  @keyframes cueMove{ 0%,100%{ transform:scaleY(1); opacity:.4;} 50%{ transform:scaleY(1.3); opacity:1;} }
+
+  /* ---------------- Who We Are (dark) ---------------- */
+  .who{
+    background:var(--charcoal); color:var(--cream); padding:120px 0;
+    position:relative; overflow:hidden;
+  }
+  .who::before{
+    content:''; position:absolute; left:-140px; top:-140px; width:420px; height:420px; border-radius:50%;
+    background:radial-gradient(circle, var(--gold-500), transparent 70%); opacity:0.08;
+  }
+  .who-grid{ display:grid; grid-template-columns:1fr 0.85fr; gap:64px; align-items:center; position:relative; z-index:1; }
+  .who h2{ color:var(--cream); font-size:clamp(1.9rem,3.4vw,2.6rem); margin:18px 0 22px; max-width:480px; }
+  .who p{ color:rgba(247,242,231,0.78); font-size:15.5px; max-width:480px; }
+  .who-divider{ width:56px; height:2px; background:var(--gold-500); margin:22px 0; }
+  .who-media{ position:relative; }
+  .who-media img{
+    border-radius:var(--radius); box-shadow:var(--shadow);
+    aspect-ratio:4/3.1; object-fit:cover; width:100%;
+  }
+  .who-media .frame-tag{
+    position:absolute; bottom:-18px; left:-18px; background:var(--gold-500); color:var(--teal-900);
+    padding:14px 18px; border-radius:12px; font-family:'JetBrains Mono',monospace; font-size:11px;
+    letter-spacing:0.06em; text-transform:uppercase; font-weight:700; box-shadow:0 14px 30px -14px rgba(0,0,0,0.5);
+  }
+
+  /* ---------------- Things We Do ---------------- */
+  .services{ padding:120px 0 100px; }
+  .section-head{ text-align:center; max-width:640px; margin:0 auto 60px; }
+  .section-head h2{ font-size:clamp(2rem,3.4vw,2.7rem); margin-top:16px; color:var(--teal-900); }
+  .service-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; }
+  .service-card{
+    background:var(--paper); border-radius:var(--radius); overflow:hidden; border:1px solid var(--line);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  .service-card:hover{ transform:translateY(-8px); box-shadow:var(--shadow); }
+  .service-media{ position:relative; height:200px; overflow:hidden; }
+  .service-media img{ width:100%; height:100%; object-fit:cover; transition:transform .6s ease; }
+  .service-card:hover .service-media img{ transform:scale(1.08); }
+  .service-num{
+    position:absolute; top:14px; left:14px; width:34px; height:34px; border-radius:50%;
+    background:rgba(23,21,26,0.72); color:var(--gold-300); display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:600; backdrop-filter:blur(4px);
+  }
+  .service-body{ padding:26px 26px 30px; }
+  .service-body h3{ font-size:19px; color:var(--teal-900); margin-bottom:10px; }
+  .service-body p{ font-size:14.5px; color:#45443c; margin:0; }
+
+  .services-note{
+    max-width:720px; margin:56px auto 0; text-align:center; font-size:15.5px; color:#45443c;
+    padding:28px 36px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .services-note strong{ color:var(--teal-900); }
+
+  /* ---------------- CTA banner ---------------- */
+  .cta-banner{
+    background:linear-gradient(135deg, var(--teal-900), var(--teal-700));
+    color:var(--cream); border-radius:26px; padding:64px 56px; margin:0 32px 0;
+    max-width:1116px; margin-left:auto; margin-right:auto;
+    display:flex; align-items:center; justify-content:space-between; gap:32px;
+    position:relative; overflow:hidden;
+  }
+  .cta-banner::before{
+    content:''; position:absolute; right:-70px; bottom:-90px; width:280px; height:280px; border-radius:50%;
+    background:radial-gradient(circle, var(--gold-500), transparent 70%); opacity:0.28;
+  }
+  .cta-banner h2{ color:var(--cream); font-size:clamp(1.6rem,2.6vw,2.2rem); max-width:480px; position:relative; z-index:1; }
+  .cta-banner p{ color:rgba(247,242,231,0.75); margin-top:10px; font-size:14.5px; position:relative; z-index:1; }
+  .cta-banner .btn{ position:relative; z-index:1; }
+
+  /* ---------------- Footer ---------------- */
+  footer{ background:var(--charcoal); color:var(--cream); padding:90px 0 30px; margin-top:110px; }
+  .footer-top{ text-align:center; margin-bottom:52px; }
+  .footer-brand{ display:flex; gap:12px; align-items:center; justify-content:center; margin-bottom:10px; }
+  .footer-brand img{ height:36px; width:36px; }
+  .footer-brand .name{ font-family:'Fraunces',serif; font-weight:700; font-size:19px; }
+  .footer-tag{ font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold-300); }
+
+  .quick-links{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin:36px 0 60px; }
+  .quick-links a{
+    padding:12px 22px; border:1px solid var(--line-dark); border-radius:999px; font-size:13.5px; font-weight:500;
+    transition:border-color .25s ease, background .25s ease, color .25s ease;
+  }
+  .quick-links a:hover{ background:var(--gold-500); border-color:var(--gold-500); color:var(--teal-900); }
+
+  .contact-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:30px; text-align:center;
+    padding:44px 0; border-top:1px solid var(--line-dark); border-bottom:1px solid var(--line-dark);
+  }
+  .contact-grid h4{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--gold-300); margin-bottom:12px; font-weight:600;
+  }
+  .contact-grid p{ font-size:14.5px; color:rgba(247,242,231,0.85); margin:0; }
+  .contact-grid a{ color:rgba(247,242,231,0.85); }
+  .contact-grid a:hover{ color:var(--gold-300); }
+
+  .footer-bottom{
+    display:flex; justify-content:space-between; align-items:center; padding-top:26px;
+    font-size:12.5px; color:rgba(247,242,231,0.5); flex-wrap:wrap; gap:10px;
+  }
+
+  /* ---------------- Responsive ---------------- */
+  @media (max-width:900px){
+    nav.links{ display:none; }
+    .who-grid{ grid-template-columns:1fr; }
+    .who-media{ order:-1; }
+    .service-grid{ grid-template-columns:1fr; }
+    .cta-banner{ flex-direction:column; text-align:center; margin:0 16px; padding:44px 30px; }
+    .contact-grid{ grid-template-columns:1fr; gap:22px; }
+  }
+  @media (max-width:600px){
+    .wrap{ padding:0 20px; }
+    .hero{ padding-bottom:64px; }
+    .who{ padding:88px 0; }
+    .services{ padding:88px 0 70px; }
+    footer{ padding:70px 0 24px; }
+    .quick-links{ gap:10px; }
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="nav">
+    <div class="brand">
+      <img src="logo.png" alt="Vinnovates logo">
+      <div class="brand-text">
+        <div class="name">VINNOVATES</div>
+        <div class="tag">Property Management</div>
+      </div>
+    </div>
+    <nav class="links">
+      <a href="#who">Who We Are</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="btn">Book a Consultation</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Vinnovates — Property Management</div>
+      <h1><span>Ready to start</span><span>a new chapter?</span></h1>
+      <p class="lead">Buying, selling, or managing a property is a big decision. We make sure it's a safe one — with clear documents, honest guidance, and no surprises.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn">Book a Consultation</a>
+        <a href="#services" class="btn ghost">See What We Do</a>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+  </section>
+
+  <!-- WHO WE ARE -->
+  <section class="who" id="who">
+    <div class="wrap who-grid">
+      <div class="reveal">
+        <div class="eyebrow on-dark">Who We Are</div>
+        <h2>A consultancy built on hands-on real estate experience.</h2>
+        <div class="who-divider"></div>
+        <p>Vinnovates is a property management and consultancy service helping landowners and buyers make safe, informed decisions. We specialise in land document verification, property measurement, and registration guidance — so you never have to worry about hidden risks in your property deals.</p>
+        <p style="margin-top:14px;">Backed by hands-on real estate experience and a systematic approach, we make property transactions simple, transparent, and stress-free.</p>
+      </div>
+      <div class="who-media reveal">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=900&auto=format&fit=crop" alt="Vinnovates consultation in progress">
+        <div class="frame-tag">Consultation-only</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THINGS WE DO -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow on-light">Things We Do</div>
+        <h2>Where we help</h2>
+      </div>
+
+      <div class="service-grid">
+        <div class="service-card reveal">
+          <div class="service-media">
+            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=800&auto=format&fit=crop" alt="Buy or sell property">
+            <div class="service-num mono">01</div>
+          </div>
+          <div class="service-body">
+            <h3>Buy / Sell Property</h3>
+            <p>Buy or sell your property stress-free with Vinnovates — we guide you through every step of the deal.</p>
+          </div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-media">
+            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop" alt="Document verification">
+            <div class="service-num mono">02</div>
+          </div>
+          <div class="service-body">
+            <h3>Document Verification</h3>
+            <p>Let your property documents be verified by us before proceeding — so nothing hidden catches you later.</p>
+          </div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-media">
+            <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=800&auto=format&fit=crop" alt="Property management">
+            <div class="service-num mono">03</div>
+          </div>
+          <div class="service-body">
+            <h3>Property Management</h3>
+            <p>We help maintain your property documents, generate regular reports, and manage upkeep while you're away.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="services-note reveal"><strong>Vinnovates offers a consultation-only service</strong> covering all your property queries — documents, measurements, registration, and more. Our experts guide you every step of the way.</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="wrap">
+    <div class="cta-banner reveal" id="contact">
+      <div>
+        <h2>Have a property decision to make?</h2>
+        <p>Let's talk it through before you sign anything.</p>
+      </div>
+      <a href="mailto:vinnovatesautomation@gmail.com" class="btn">Book a Consultation</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="logo.png" alt="Vinnovates logo">
+        <span class="name">VINNOVATES</span>
+      </div>
+      <div class="footer-tag">Property Management &amp; Consultancy</div>
+    </div>
+
+    <div class="quick-links">
+      <a href="mailto:vinnovatesautomation@gmail.com?subject=Enquiry%3A%20Document%20Verification">Document Verification</a>
+      <a href="mailto:vinnovatesautomation@gmail.com?subject=Enquiry%3A%20Sell%20a%20Home">Sell a Home</a>
+      <a href="mailto:vinnovatesautomation@gmail.com?subject=Enquiry%3A%20Buy%20a%20Home">Buy a Home</a>
+      <a href="mailto:vinnovatesautomation@gmail.com?subject=Enquiry%3A%20Consultation">Consultation</a>
+    </div>
+
+    <div class="contact-grid">
+      <div>
+        <h4>Main Office</h4>
+        <p>Plot no 3, Om Shakthi Nagar,<br>Pallikaranai, 600100</p>
+      </div>
+      <div>
+        <h4>Phone</h4>
+        <p><a href="tel:8825631524">88256 31524</a></p>
+      </div>
+      <div>
+        <h4>Email</h4>
+        <p><a href="mailto:vinnovatesautomation@gmail.com">vinnovatesautomation@gmail.com</a></p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Vinnovates. All rights reserved.</span>
+      <span>Consultancy services are advisory in nature.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting){ e.target.classList.add('in-view'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('in-view'));
+  }
+</script>
+
+</body>
+</html>
